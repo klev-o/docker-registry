@@ -19,3 +19,12 @@ docker-build:
 
 password:
 	docker run registry:2.6 htpasswd -Bbn registry password > htpasswd
+
+deploy:
+	ssh deploy@${HOST} -p ${PORT} 'rm -rf registry && mkdir registry'
+	scp -P ${PORT} docker-compose-production.yml deploy@${HOST}:registry/docker-compose.yml
+	scp -P ${PORT} -r docker deploy@${HOST}:registry/docker
+	scp -P ${PORT} ${HTPASSWD_FILE} deploy@${HOST}:registry/htpasswd
+	ssh deploy@${HOST} -p ${PORT} 'cd registry && echo "COMPOSE_PROJECT_NAME=registry" >> .env'
+	ssh deploy@${HOST} -p ${PORT} 'cd registry && docker-compose pull'
+	ssh deploy@${HOST} -p ${PORT} 'cd registry && docker-compose up --build --remove-orphans -d'
