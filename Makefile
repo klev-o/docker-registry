@@ -16,3 +16,6 @@ docker-pull:
 
 docker-build:
 	docker-compose build
+
+password:
+	docker run registry:2.6 htpasswd -Bbn registry password > htpasswd
