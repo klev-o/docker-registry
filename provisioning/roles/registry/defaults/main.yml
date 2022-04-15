@@ -1,3 +1,4 @@
 certbot_email: youcoder1@gmail.com
 certbot_hosts:
   - registry.you-coder.ru
+  - cache-registry.you-coder.ru
